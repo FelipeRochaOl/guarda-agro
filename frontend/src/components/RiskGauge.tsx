@@ -3,19 +3,11 @@
  * Usa Highcharts solidgauge para exibir o score e fatores/recomendações
  */
 
-import { useRef, useEffect } from "react";
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import Highcharts from "highcharts";
-import HighchartsMore from "highcharts/highcharts-more.js";
-import SolidGauge from "highcharts/modules/solid-gauge.js";
 import HighchartsReact from "highcharts-react-official";
+import { useRef } from "react";
 import type { RiskAssessment, RiskLevel } from "../types/analysis";
-
-// Inicializa módulos do Highcharts
-if (typeof Highcharts === 'object') {
-  (HighchartsMore as any)(Highcharts);
-  (SolidGauge as any)(Highcharts);
-}
 
 interface RiskGaugeProps {
   risk: RiskAssessment;
@@ -23,19 +15,27 @@ interface RiskGaugeProps {
 
 function getRiskColor(level: RiskLevel): string {
   switch (level) {
-    case "Baixo": return "#10b981";
-    case "Médio": return "#f59e0b";
-    case "Alto": return "#f97316";
-    case "Crítico": return "#ef4444";
+    case "Baixo":
+      return "#10b981";
+    case "Médio":
+      return "#f59e0b";
+    case "Alto":
+      return "#f97316";
+    case "Crítico":
+      return "#ef4444";
   }
 }
 
 function getRiskBadgeClass(level: RiskLevel): string {
   switch (level) {
-    case "Baixo": return "risk-baixo";
-    case "Médio": return "risk-medio";
-    case "Alto": return "risk-alto";
-    case "Crítico": return "risk-critico";
+    case "Baixo":
+      return "risk-baixo";
+    case "Médio":
+      return "risk-medio";
+    case "Alto":
+      return "risk-alto";
+    case "Crítico":
+      return "risk-critico";
   }
 }
 
@@ -105,12 +105,17 @@ export default function RiskGauge({ risk }: RiskGaugeProps) {
   };
 
   return (
-    <Card className="ga-card border-0 animate-fade-in-up" style={{ opacity: 0 }}>
+    <Card
+      className="ga-card border-0 animate-fade-in-up"
+      style={{ opacity: 0 }}
+    >
       <CardHeader className="flex flex-col items-start gap-2 pb-0 pt-5 px-6">
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-2">
             <span className="text-2xl">🛡️</span>
-            <h2 className="ga-section-title text-white">Índice de Risco Ambiental</h2>
+            <h2 className="ga-section-title text-white">
+              Índice de Risco Ambiental
+            </h2>
           </div>
           <Chip
             size="lg"

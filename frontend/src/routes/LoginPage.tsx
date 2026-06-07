@@ -3,17 +3,17 @@
  * Permite login e cadastro com Firebase Auth (email/senha)
  */
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
+  Button,
   Card,
   CardBody,
-  Input,
-  Button,
   Divider,
-  Tabs,
+  Input,
   Tab,
+  Tabs,
 } from "@heroui/react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function LoginPage() {
@@ -49,7 +49,11 @@ export default function LoginPage() {
     } catch (err: any) {
       console.error("Auth error:", err);
       const code = err?.code || "";
-      if (code === "auth/user-not-found" || code === "auth/wrong-password" || code === "auth/invalid-credential") {
+      if (
+        code === "auth/user-not-found" ||
+        code === "auth/wrong-password" ||
+        code === "auth/invalid-credential"
+      ) {
         setError("Email ou senha incorretos.");
       } else if (code === "auth/email-already-in-use") {
         setError("Este email já está cadastrado.");
@@ -70,7 +74,10 @@ export default function LoginPage() {
       {/* Background decorations */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-float" style={{ animationDelay: "1.5s" }} />
+        <div
+          className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl animate-float"
+          style={{ animationDelay: "1.5s" }}
+        />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/3 rounded-full blur-3xl" />
       </div>
 
@@ -84,12 +91,16 @@ export default function LoginPage() {
             GuardaAgro
           </h1>
           <p className="text-slate-400 text-sm max-w-xs mx-auto">
-            Análise ambiental com dados espaciais da NASA para prevenção de riscos climáticos
+            Análise ambiental com dados espaciais da NASA para prevenção de
+            riscos climáticos
           </p>
         </div>
 
         {/* Card de Login */}
-        <Card className="ga-card border-0 shadow-2xl shadow-black/40 animate-fade-in-up stagger-2" style={{ opacity: 0 }}>
+        <Card
+          className="ga-card border-0 shadow-2xl shadow-black/40 animate-fade-in-up stagger-2"
+          style={{ opacity: 0 }}
+        >
           <CardBody className="p-6 sm:p-8">
             <Tabs
               fullWidth
@@ -115,12 +126,16 @@ export default function LoginPage() {
                 type="email"
                 placeholder="seu@email.com"
                 value={email}
-                onValueChange={(v) => { setEmail(v); setError(""); }}
+                onValueChange={(v) => {
+                  setEmail(v);
+                  setError("");
+                }}
                 variant="bordered"
                 classNames={{
-                  inputWrapper: "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
+                  inputWrapper:
+                    "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
                   label: "text-slate-400",
-                  input: "text-white",
+                  input: "text-white mt-8 b-0 outline-none focus:ring-0",
                 }}
               />
 
@@ -129,12 +144,16 @@ export default function LoginPage() {
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onValueChange={(v) => { setPassword(v); setError(""); }}
+                onValueChange={(v) => {
+                  setPassword(v);
+                  setError("");
+                }}
                 variant="bordered"
                 classNames={{
-                  inputWrapper: "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
+                  inputWrapper:
+                    "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
                   label: "text-slate-400",
-                  input: "text-white",
+                  input: "text-white mt-8 b-0 outline-none focus:ring-0",
                 }}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
@@ -150,7 +169,7 @@ export default function LoginPage() {
                 size="lg"
                 onPress={handleSubmit}
                 isLoading={isLoading}
-                className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all mt-2"
+                className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all mt-2 rounded-lg"
               >
                 {selectedTab === "login" ? "Entrar" : "Criar conta"}
               </Button>
