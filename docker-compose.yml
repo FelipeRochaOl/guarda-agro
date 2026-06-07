@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: guarda-agro-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NASA_FIRMS_API_KEY=${NASA_FIRMS_API_KEY:-}
+      - NASA_FIRMS_SOURCE=${NASA_FIRMS_SOURCE:-VIIRS_SNPP_NRT}
+      - CORS_ORIGIN=http://localhost:5173
+    networks:
+      - guarda-agro-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:3001
+        - VITE_FIREBASE_API_KEY=${VITE_FIREBASE_API_KEY:-}
+        - VITE_FIREBASE_AUTH_DOMAIN=${VITE_FIREBASE_AUTH_DOMAIN:-}
+        - VITE_FIREBASE_PROJECT_ID=${VITE_FIREBASE_PROJECT_ID:-}
+        - VITE_FIREBASE_STORAGE_BUCKET=${VITE_FIREBASE_STORAGE_BUCKET:-}
+        - VITE_FIREBASE_MESSAGING_SENDER_ID=${VITE_FIREBASE_MESSAGING_SENDER_ID:-}
+        - VITE_FIREBASE_APP_ID=${VITE_FIREBASE_APP_ID:-}
+    container_name: guarda-agro-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - guarda-agro-network
+    restart: unless-stopped
+
+networks:
+  guarda-agro-network:
+    driver: bridge
