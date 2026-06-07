@@ -15,14 +15,6 @@
       "destination": "/api"
     }
   ],
-  "env": {
-    "NASA_FIRMS_API_KEY": "@nasa_firms_api_key",
-    "NASA_FIRMS_SOURCE": "@nasa_firms_source",
-    "CORS_ORIGIN": "@cors_origin",
-    "FIREBASE_PROJECT_ID": "@firebase_project_id",
-    "FIREBASE_CLIENT_EMAIL": "@firebase_client_email",
-    "FIREBASE_PRIVATE_KEY": "@firebase_private_key"
-  },
   "experimentalServices": {
     "frontend": {
       "root": "frontend",
