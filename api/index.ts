@@ -9,11 +9,9 @@ import { analysisRoutes } from "../backend/src/modules/analysis/routes/analysis.
 import { nasaRoutes } from "../backend/src/modules/nasa/routes/nasa.routes";
 
 const app = new Elysia()
-  // CORS configurado para permitir Vercel e localhost
   .use(
     cors({
       origin: (origin) => {
-        // Permite localhost (dev) e qualquer domínio vercel.app (prod)
         if (!origin) return true;
         if (origin.includes("localhost")) return true;
         if (origin.endsWith(".vercel.app")) return true;
