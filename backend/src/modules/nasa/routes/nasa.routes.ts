@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { NasaController } from "../controllers/nasa.controller";
 
-export const nasaRoutes = new Elysia({ prefix: "/api/nasa" })
+export const nasaRoutes = new Elysia({ prefix: "/nasa" })
   .decorate("nasaController", new NasaController())
   .get(
     "/power",
@@ -13,7 +13,7 @@ export const nasaRoutes = new Elysia({ prefix: "/api/nasa" })
         start: t.String(),
         end: t.String(),
       }),
-    }
+    },
   )
   .get(
     "/firms",
@@ -24,5 +24,5 @@ export const nasaRoutes = new Elysia({ prefix: "/api/nasa" })
         longitude: t.String(),
         days: t.String(),
       }),
-    }
+    },
   );
