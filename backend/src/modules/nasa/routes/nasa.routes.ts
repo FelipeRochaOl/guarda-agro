@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { NasaController } from "../controllers/nasa.controller";
 
-export const nasaRoutes = new Elysia({ prefix: "/api/nasa" })
+export const nasaRoutes = new Elysia({ prefix: "/nasa" })
   .decorate("nasaController", new NasaController())
   .get(
     "/power",
