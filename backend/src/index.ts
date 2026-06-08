@@ -12,6 +12,7 @@
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { analysisRoutes } from "./modules/analysis/routes/analysis.routes";
+import { auth } from "./modules/auth";
 import { nasaRoutes } from "./modules/nasa/routes/nasa.routes";
 
 const PORT = parseInt(process.env.PORT || "3001");
@@ -34,8 +35,15 @@ const app = new Elysia()
     version: "1.0.0",
   }))
   // Rotas da aplicação (Módulos)
+  .use(auth)
   .use(analysisRoutes)
   .use(nasaRoutes);
+
+if (process.env.NODE_ENV === "dev") {
+  app.listen(PORT, () => {
+    console.log(`Servidor rodando em ${process.env.NODE_ENV} na porta ${PORT}`);
+  });
+}
 
 console.log(`
 ╔══════════════════════════════════════════════╗

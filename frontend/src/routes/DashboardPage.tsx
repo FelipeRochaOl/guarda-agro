@@ -18,7 +18,7 @@ import { saveAnalysis } from "../services/history.service";
 import type { AnalysisResult } from "../types/analysis";
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+  const { user, token, logout } = useAuth();
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -31,19 +31,28 @@ export default function DashboardPage() {
       setResult(null);
 
       try {
-        const data = await fetchAnalysis(latitude, longitude, days);
+        if (!token) {
+          throw new Error(
+            "Usuário não autenticado. Faça login para continuar.",
+          );
+        }
+        const data = await fetchAnalysis(latitude, longitude, days, token);
         setResult(data);
 
         // Salvar no histórico do Firestore
         if (user) {
           try {
-            await saveAnalysis(user.uid, data);
+            await saveAnalysis(user.uid, data, token);
             setRefreshHistory((prev) => prev + 1);
           } catch (saveErr) {
             console.warn("Não foi possível salvar no histórico:", saveErr);
           }
         }
       } catch (err: any) {
+        if (err.message.includes("401") || err.message.includes("403")) {
+          setError("Sessão expirada ou token inválido. Faça login novamente.");
+          await logout();
+        }
         console.error("Erro na análise:", err);
         setError(
           err.message ||

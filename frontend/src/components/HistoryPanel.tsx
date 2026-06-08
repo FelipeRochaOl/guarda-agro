@@ -2,32 +2,43 @@
  * HistoryPanel — Painel de histórico de análises salvas no Firestore
  */
 
-import { useEffect, useState } from "react";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  Divider,
   Chip,
+  Divider,
   Spinner,
-  Button,
 } from "@heroui/react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { getUserHistory } from "../services/history.service";
-import type { HistoryEntry, AnalysisResult, RiskLevel } from "../types/analysis";
+import type {
+  AnalysisResult,
+  HistoryEntry,
+  RiskLevel,
+} from "../types/analysis";
 
 interface HistoryPanelProps {
   onSelectAnalysis: (result: AnalysisResult) => void;
   refreshTrigger?: number;
 }
 
-function getRiskChipColor(level: RiskLevel): "success" | "warning" | "danger" | "default" {
+function getRiskChipColor(
+  level: RiskLevel,
+): "success" | "warning" | "danger" | "default" {
   switch (level) {
-    case "Baixo": return "success";
-    case "Médio": return "warning";
-    case "Alto": return "danger";
-    case "Crítico": return "danger";
-    default: return "default";
+    case "Baixo":
+      return "success";
+    case "Médio":
+      return "warning";
+    case "Alto":
+      return "danger";
+    case "Crítico":
+      return "danger";
+    default:
+      return "default";
   }
 }
 
@@ -46,7 +57,7 @@ export default function HistoryPanel({
   onSelectAnalysis,
   refreshTrigger,
 }: HistoryPanelProps) {
-  const { user } = useAuth();
+  const { user, token, logout } = useAuth();
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,9 +67,14 @@ export default function HistoryPanel({
     setLoading(true);
     setError("");
     try {
-      const entries = await getUserHistory(user.uid);
+      const entries = await getUserHistory(user.uid, token);
       setHistory(entries);
-    } catch (err) {
+    } catch (error) {
+      const err = error as Error;
+      if (err.message.includes("401") || err.message.includes("403")) {
+        setError("Sessão expirada ou token inválido. Faça login novamente.");
+        await logout();
+      }
       console.error("Erro ao carregar histórico:", err);
       setError("Não foi possível carregar o histórico.");
     } finally {

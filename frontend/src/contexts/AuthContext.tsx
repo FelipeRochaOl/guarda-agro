@@ -24,6 +24,7 @@ import { auth } from "../firebase";
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  token: string | null;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
   register: (email: string, password: string) => Promise<void>;
@@ -35,20 +36,36 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoading(false);
+      if (currentUser) {
+        currentUser.getIdToken().then((idToken) => {
+          setToken(idToken);
+          // Armazene o token no localStorage para uso futuro
+          localStorage.setItem("authToken", idToken);
+        });
+      } else {
+        setToken(null);
+        localStorage.removeItem("authToken");
+      }
     });
     return () => unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      const idToken = await result.user.getIdToken();
+      setToken(idToken);
+      localStorage.setItem("authToken", idToken);
     } catch (error) {
       console.error("Login error:", error);
+      setToken(null);
+      localStorage.removeItem("authToken");
       throw error;
     }
   };
@@ -58,18 +75,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const provider = new GoogleAuthProvider();
       provider.addScope("profile");
       provider.addScope("email");
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const idToken = await result.user.getIdToken();
+      setToken(idToken);
+      localStorage.setItem("authToken", idToken);
     } catch (error) {
       console.error("Google login error:", error);
+      setToken(null);
+      localStorage.removeItem("authToken");
       throw error;
     }
   };
 
   const register = async (email: string, password: string) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const result = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const idToken = await result.user.getIdToken();
+      setToken(idToken);
+      localStorage.setItem("authToken", idToken);
     } catch (error) {
       console.error("Registration error:", error);
+      setToken(null);
+      localStorage.removeItem("authToken");
       throw error;
     }
   };
@@ -80,7 +111,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, register, logout, loginWithGoogle }}
+      value={{ user, loading, login, register, logout, loginWithGoogle, token }}
     >
       {children}
     </AuthContext.Provider>

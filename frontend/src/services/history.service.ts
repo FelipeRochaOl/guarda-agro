@@ -16,13 +16,14 @@ export async function saveAnalysis(
   userId: string,
   result: AnalysisResult,
   locationLabel?: string,
+  token: string | null = null,
 ): Promise<string> {
   const url = `${API_URL}/api/analysis/history`;
-
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
       userId,
@@ -47,12 +48,21 @@ export async function saveAnalysis(
 /**
  * Busca as últimas análises do usuário via Backend
  */
-export async function getUserHistory(userId: string): Promise<HistoryEntry[]> {
+export async function getUserHistory(
+  userId: string,
+  token: string | null,
+): Promise<HistoryEntry[]> {
   const url = `${API_URL}/api/analysis/history?userId=${userId}`;
-
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("401 Unauthorized - Token inválido ou expirado");
+    }
     const errorData = await response.json().catch(() => null);
     throw new Error(
       errorData?.error || `Erro ao buscar histórico (${response.status})`,
@@ -60,15 +70,4 @@ export async function getUserHistory(userId: string): Promise<HistoryEntry[]> {
   }
 
   return response.json();
-}
-
-/**
- * Busca uma análise específica pelo ID (não implementado no backend ainda)
- * Mantido para compatibilidade
- */
-export async function getAnalysisById(
-  analysisId: string,
-): Promise<HistoryEntry | null> {
-  console.warn("[History Service] getAnalysisById não implementado no backend");
-  return null;
 }

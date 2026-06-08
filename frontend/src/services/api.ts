@@ -16,12 +16,19 @@ export async function fetchAnalysis(
   latitude: number,
   longitude: number,
   days: number,
+  token: string | null,
 ): Promise<AnalysisResult> {
   const url = `${API_URL}/api/analysis?latitude=${latitude}&longitude=${longitude}&days=${days}`;
-
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   if (!response.ok) {
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("401 Unauthorized - Token inválido ou expirado");
+    }
     const errorData = await response.json().catch(() => null);
     throw new Error(
       errorData?.error ||
@@ -29,51 +36,5 @@ export async function fetchAnalysis(
     );
   }
 
-  return response.json();
-}
-
-/**
- * Busca dados climáticos da NASA POWER
- */
-export async function fetchNasaPower(
-  latitude: number,
-  longitude: number,
-  start: string,
-  end: string,
-) {
-  const url = `${API_URL}/api/nasa/power?latitude=${latitude}&longitude=${longitude}&start=${start}&end=${end}`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error("Erro ao buscar dados da NASA POWER");
-  }
-
-  return response.json();
-}
-
-/**
- * Busca focos de calor da NASA FIRMS
- */
-export async function fetchNasaFirms(
-  latitude: number,
-  longitude: number,
-  days: number,
-) {
-  const url = `${API_URL}/api/nasa/firms?latitude=${latitude}&longitude=${longitude}&days=${days}`;
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new Error("Erro ao buscar dados da NASA FIRMS");
-  }
-
-  return response.json();
-}
-
-/**
- * Verifica saúde da API
- */
-export async function checkHealth() {
-  const url = `${API_URL}/health`;
-  const response = await fetch(url);
   return response.json();
 }

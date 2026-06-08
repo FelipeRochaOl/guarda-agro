@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Backend do GuardaAgro — Análise de Risco Ambiental com dados da NASA",
   "scripts": {
-    "dev": "bun run --watch src/index.ts",
+    "dev": "NODE_ENV=dev bun run --watch src/index.ts",
     "start": "bun run src/index.ts",
     "build": "bun build src/index.ts --outdir ./dist --target bun"
   },
   "dependencies": {
+    "@elysia/bearer": "^1.4.4",
     "@elysiajs/cors": "^1.2.0",
     "elysia": "^1.2.25",
     "firebase-admin": "^13.10.0"
