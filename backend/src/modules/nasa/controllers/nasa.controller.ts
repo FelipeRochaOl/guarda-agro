@@ -1,7 +1,7 @@
-import { NasaPowerService } from "../services/nasaPower.service";
-import { NasaFirmsService } from "../services/nasaFirms.service";
-import { isValidLatitude, isValidLongitude } from "../../../utils/geo";
 import { isValidDays } from "../../../utils/date";
+import { isValidLatitude, isValidLongitude } from "../../../utils/geo";
+import { NasaFirmsService } from "../services/nasaFirms.service";
+import { NasaPowerService } from "../services/nasaPower.service";
 
 export class NasaController {
   private powerService: NasaPowerService;
@@ -12,7 +12,10 @@ export class NasaController {
     this.firmsService = new NasaFirmsService();
   }
 
-  async getPowerData(query: { latitude: string; longitude: string; start: string; end: string }, set: any) {
+  async getPowerData(
+    query: { latitude: string; longitude: string; start: string; end: string },
+    set: any,
+  ) {
     const latitude = parseFloat(query.latitude);
     const longitude = parseFloat(query.longitude);
     const { start, end } = query;
@@ -52,7 +55,10 @@ export class NasaController {
     }
   }
 
-  async getFirmsData(query: { latitude: string; longitude: string; days: string }, set: any) {
+  async getFirmsData(
+    query: { latitude: string; longitude: string; days: string },
+    set: any,
+  ) {
     const latitude = parseFloat(query.latitude);
     const longitude = parseFloat(query.longitude);
     const days = parseInt(query.days);
@@ -71,7 +77,11 @@ export class NasaController {
     }
 
     try {
-      const result = await this.firmsService.getFireData(latitude, longitude, days);
+      const result = await this.firmsService.getFireData(
+        latitude,
+        longitude,
+        days,
+      );
 
       return {
         location: { latitude, longitude },

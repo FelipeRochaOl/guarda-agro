@@ -74,7 +74,7 @@ export class AnalysisRepository {
       return entries;
     } catch (error) {
       console.error("[Analysis Repository] Erro ao buscar histórico:", error);
-      throw new Error("Falha ao recuperar histórico do Firestore");
+      return [];
     }
   }
 }

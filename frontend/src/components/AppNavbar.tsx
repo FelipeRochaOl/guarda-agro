@@ -26,7 +26,7 @@ export default function AppNavbar() {
     >
       <NavbarBrand className="gap-3">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">
+          <div className="w-8 h-8 rounded-lg bg-linear-to-br from-emerald-400 to-cyan-500 flex items-center justify-center text-white font-bold text-sm">
             🌿
           </div>
           <span className="font-bold text-xl tracking-tight ga-gradient-text">

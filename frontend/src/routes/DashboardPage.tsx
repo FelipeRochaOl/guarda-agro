@@ -3,18 +3,18 @@
  * Integra formulário, resultados, gráficos e histórico
  */
 
-import { useState, useCallback } from "react";
-import { Card, CardBody, Spinner, Chip } from "@heroui/react";
-import AppNavbar from "../components/AppNavbar";
+import { Card, CardBody, Chip, Spinner } from "@heroui/react";
+import { useCallback, useState } from "react";
 import AnalysisForm from "../components/AnalysisForm";
+import AppNavbar from "../components/AppNavbar";
 import ClimateCards from "../components/ClimateCards";
-import RiskGauge from "../components/RiskGauge";
 import ClimateChart from "../components/ClimateChart";
 import FireTable from "../components/FireTable";
 import HistoryPanel from "../components/HistoryPanel";
+import RiskGauge from "../components/RiskGauge";
+import { useAuth } from "../contexts/AuthContext";
 import { fetchAnalysis } from "../services/api";
 import { saveAnalysis } from "../services/history.service";
-import { useAuth } from "../contexts/AuthContext";
 import type { AnalysisResult } from "../types/analysis";
 
 export default function DashboardPage() {
@@ -46,13 +46,14 @@ export default function DashboardPage() {
       } catch (err: any) {
         console.error("Erro na análise:", err);
         setError(
-          err.message || "Erro ao conectar com o servidor. Verifique se o backend está rodando."
+          err.message ||
+            "Erro ao conectar com o servidor. Verifique se o backend está rodando.",
         );
       } finally {
         setIsLoading(false);
       }
     },
-    [user]
+    [user],
   );
 
   const handleSelectHistory = (historyResult: AnalysisResult) => {
@@ -68,11 +69,11 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
         {/* Hero Card */}
-        <Card className="ga-card border-0 bg-gradient-to-r from-[#0d1f2d] to-[#0d1321] overflow-hidden relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5" />
+        <Card className="ga-card border-0 bg-linear-to-r from-[#0d1f2d] to-[#0d1321] overflow-hidden relative">
+          <div className="absolute inset-0 bg-linear-to-r from-emerald-500/5 to-cyan-500/5" />
           <CardBody className="p-6 sm:p-8 relative z-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+              <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-emerald-400 to-cyan-500 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
                 <span className="text-3xl">🛰️</span>
               </div>
               <div>
@@ -80,9 +81,10 @@ export default function DashboardPage() {
                   Dashboard de Análise Ambiental
                 </h1>
                 <p className="text-slate-400 text-sm leading-relaxed max-w-2xl">
-                  Análise ambiental com dados espaciais da NASA para prevenção de riscos climáticos.
-                  Monitore temperatura, umidade, precipitação, vento, radiação solar e focos de calor
-                  em qualquer região do planeta.
+                  Análise ambiental com dados espaciais da NASA para prevenção
+                  de riscos climáticos. Monitore temperatura, umidade,
+                  precipitação, vento, radiação solar e focos de calor em
+                  qualquer região do planeta.
                 </p>
               </div>
               <Chip

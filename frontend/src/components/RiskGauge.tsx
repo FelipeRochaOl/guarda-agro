@@ -1,3 +1,4 @@
+"use client";
 /**
  * RiskGauge — Indicador visual do índice de risco ambiental
  * Usa Highcharts solidgauge para exibir o score e fatores/recomendações
@@ -6,6 +7,8 @@
 import { Card, CardBody, CardHeader, Chip, Divider } from "@heroui/react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import "highcharts/highcharts-more";
+import "highcharts/modules/solid-gauge";
 import { useRef } from "react";
 import type { RiskAssessment, RiskLevel } from "../types/analysis";
 

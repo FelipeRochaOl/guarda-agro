@@ -6,6 +6,8 @@
 import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import "highcharts/highcharts-more";
+import "highcharts/modules/solid-gauge";
 import type { ClimateData } from "../types/analysis";
 
 interface ClimateChartProps {
@@ -48,7 +50,8 @@ export default function ClimateChart({ climate }: ClimateChartProps) {
       backgroundColor: "#1a2332",
       borderColor: "#334155",
       style: { color: "#f1f5f9" },
-      headerFormat: '<span style="font-size:12px;font-weight:600">{point.key}</span><br/>',
+      headerFormat:
+        '<span style="font-size:12px;font-weight:600">{point.key}</span><br/>',
       pointFormat: '<span style="color:{point.color}">●</span> {point.y:.2f}',
     },
     plotOptions: {
@@ -85,7 +88,10 @@ export default function ClimateChart({ climate }: ClimateChartProps) {
   };
 
   return (
-    <Card className="ga-card border-0 animate-fade-in-up" style={{ opacity: 0 }}>
+    <Card
+      className="ga-card border-0 animate-fade-in-up"
+      style={{ opacity: 0 }}
+    >
       <CardHeader className="pb-0 pt-5 px-6">
         <div className="flex items-center gap-2">
           <span className="text-2xl">📊</span>

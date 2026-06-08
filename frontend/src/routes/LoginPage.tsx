@@ -13,6 +13,7 @@ import {
   Tabs,
 } from "@heroui/react";
 import { useState } from "react";
+import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
@@ -22,7 +23,7 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [selectedTab, setSelectedTab] = useState<string>("login");
-  const { login, register } = useAuth();
+  const { login, register, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -69,6 +70,20 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      await loginWithGoogle();
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Google login error:", err);
+      setError("Erro ao autenticar com Google. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="login-bg min-h-screen flex items-center justify-center px-4">
       {/* Background decorations */}
@@ -84,7 +99,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md relative z-10">
         {/* Logo */}
         <div className="text-center mb-8 animate-fade-in-up">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/30">
+          <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-emerald-400 to-cyan-500 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/30">
             <span className="text-3xl">🌿</span>
           </div>
           <h1 className="text-4xl font-extrabold ga-gradient-text mb-2">
@@ -135,7 +150,7 @@ export default function LoginPage() {
                   inputWrapper:
                     "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
                   label: "text-slate-400",
-                  input: "text-white mt-8 b-0 outline-none focus:ring-0",
+                  input: "text-white mt-8 b-0 outline-hidden focus:ring-0",
                 }}
               />
 
@@ -153,7 +168,7 @@ export default function LoginPage() {
                   inputWrapper:
                     "bg-slate-900/50 border-slate-700/50 hover:border-emerald-500/40 group-data-[focus=true]:border-emerald-500",
                   label: "text-slate-400",
-                  input: "text-white mt-8 b-0 outline-none focus:ring-0",
+                  input: "text-white mt-8 b-0 outline-hidden focus:ring-0",
                 }}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
               />
@@ -169,13 +184,27 @@ export default function LoginPage() {
                 size="lg"
                 onPress={handleSubmit}
                 isLoading={isLoading}
-                className="bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all mt-2 rounded-lg"
+                className="bg-linear-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all mt-2 rounded-lg"
               >
                 {selectedTab === "login" ? "Entrar" : "Criar conta"}
               </Button>
             </div>
 
             <Divider className="bg-white/5 my-6" />
+
+            <div className="space-y-4 mb-6">
+              <Button
+                fullWidth
+                variant="bordered"
+                size="lg"
+                onPress={handleGoogleLogin}
+                startContent={<FaGoogle />}
+                isLoading={isLoading}
+                className="bg-linear-to-r from-red-500 to-blue-500 text-white font-semibold shadow-lg shadow-red-500/20 hover:shadow-blue-500/40 transition-all rounded-lg"
+              >
+                Continuar com Google
+              </Button>
+            </div>
 
             <p className="text-xs text-slate-500 text-center">
               FIAP — Global Solution · Space Connect

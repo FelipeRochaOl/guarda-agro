@@ -3,18 +3,18 @@
  * Permite inserir coordenadas, selecionar período e usar sugestões rápidas
  */
 
-import { useState } from "react";
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
-  Input,
-  Button,
-  Select,
-  SelectItem,
   Chip,
   Divider,
+  Input,
+  Select,
+  SelectItem,
 } from "@heroui/react";
+import { useState } from "react";
 
 interface AnalysisFormProps {
   onSubmit: (latitude: number, longitude: number, days: number) => void;
@@ -35,7 +35,10 @@ const PERIODS = [
   { key: "7", label: "7 dias" },
 ];
 
-export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps) {
+export default function AnalysisForm({
+  onSubmit,
+  isLoading,
+}: AnalysisFormProps) {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [days, setDays] = useState("7");
@@ -76,7 +79,8 @@ export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps)
           <h2 className="ga-section-title text-white">Analisar Região</h2>
         </div>
         <p className="text-sm text-slate-400">
-          Informe as coordenadas da região para análise ambiental com dados espaciais da NASA.
+          Informe as coordenadas da região para análise ambiental com dados
+          espaciais da NASA.
         </p>
       </CardHeader>
 
@@ -115,7 +119,8 @@ export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps)
             errorMessage={errors.lat}
             variant="bordered"
             classNames={{
-              inputWrapper: "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 group-data-[focus=true]:border-cyan-500",
+              inputWrapper:
+                "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 group-data-[focus=true]:border-cyan-500",
               label: "text-slate-400",
               input: "text-white",
             }}
@@ -132,7 +137,8 @@ export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps)
             errorMessage={errors.lng}
             variant="bordered"
             classNames={{
-              inputWrapper: "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 group-data-[focus=true]:border-cyan-500",
+              inputWrapper:
+                "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 group-data-[focus=true]:border-cyan-500",
               label: "text-slate-400",
               input: "text-white",
             }}
@@ -150,7 +156,8 @@ export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps)
           }}
           variant="bordered"
           classNames={{
-            trigger: "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 data-[focus=true]:border-cyan-500",
+            trigger:
+              "bg-slate-900/50 border-slate-700/50 hover:border-cyan-500/40 data-[focus=true]:border-cyan-500",
             label: "text-slate-400",
             value: "text-white",
           }}
@@ -165,7 +172,7 @@ export default function AnalysisForm({ onSubmit, isLoading }: AnalysisFormProps)
           size="lg"
           onPress={handleSubmit}
           isLoading={isLoading}
-          className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all"
+          className="w-full bg-linear-to-r from-emerald-500 to-cyan-500 text-white font-semibold shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 transition-all"
         >
           {isLoading ? "Analisando região..." : "🔍 Analisar região"}
         </Button>

@@ -31,6 +31,7 @@ export class AnalysisService {
   ): Promise<AnalysisResult & { firmsMessage?: string }> {
     // Calcula período retroativo
     const period = calculatePeriod(days);
+    if (days > 5) days = 5; // Limite máximo para evitar sobrecarga na NASA POWER
 
     // Busca dados em paralelo para melhor performance
     const [climate, firmsResult] = await Promise.all([
