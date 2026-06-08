@@ -1,9 +1,4 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "cd frontend && npm install && npm run build",
-  "outputDirectory": "frontend/dist",
-  "devCommand": "cd frontend && npm run dev",
-  "installCommand": "npm install",
   "experimentalServices": {
     "frontend": {
       "root": "frontend",
@@ -12,7 +7,7 @@
     },
     "backend": {
       "root": "backend",
-      "routePrefix": "/_/backend",
+      "routePrefix": "/api",
       "framework": "elysia"
     }
   }
