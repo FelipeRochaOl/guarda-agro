@@ -9,8 +9,8 @@
  * - GET /api/nasa/firms — Focos de calor da NASA FIRMS
  */
 
-import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
+import { Elysia } from "elysia";
 import { analysisRoutes } from "./modules/analysis/routes/analysis.routes";
 import { nasaRoutes } from "./modules/nasa/routes/nasa.routes";
 
@@ -24,7 +24,7 @@ const app = new Elysia()
       origin: CORS_ORIGIN,
       methods: ["GET", "OPTIONS"],
       credentials: true,
-    })
+    }),
   )
   // Health check
   .get("/health", () => ({
@@ -35,9 +35,7 @@ const app = new Elysia()
   }))
   // Rotas da aplicação (Módulos)
   .use(analysisRoutes)
-  .use(nasaRoutes)
-  // Inicia o servidor
-  .listen(PORT);
+  .use(nasaRoutes);
 
 console.log(`
 ╔══════════════════════════════════════════════╗
@@ -50,4 +48,4 @@ console.log(`
 ╚══════════════════════════════════════════════╝
 `);
 
-export type App = typeof app;
+export default app;
