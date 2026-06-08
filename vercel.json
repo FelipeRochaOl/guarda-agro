@@ -7,9 +7,8 @@
     },
     "backend": {
       "root": "backend",
-      "routePrefix": "/api",
-      "framework": "elysia",
-      "entrypoint": "src/index.ts"
+      "routePrefix": "/",
+      "framework": "elysia"
     }
   }
 }
