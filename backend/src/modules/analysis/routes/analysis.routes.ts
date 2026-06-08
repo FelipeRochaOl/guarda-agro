@@ -1,7 +1,7 @@
 import { Elysia, t } from "elysia";
 import { AnalysisController } from "../controllers/analysis.controller";
 
-export const analysisRoutes = new Elysia({ prefix: "/" })
+export const analysisRoutes = new Elysia({ prefix: "/api" })
   .decorate("analysisController", new AnalysisController())
   .get(
     "/analysis",
